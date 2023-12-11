@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import { NavbarSearch } from "../components/NavbarSearch";
 const HomeLayout = () => {
   return (
-    <div>
+    <div className="p-3">
       <NavbarSearch />
       <Outlet />
     </div>

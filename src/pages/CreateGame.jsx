@@ -1,7 +1,6 @@
 import {
   Card,
   Input,
-  Checkbox,
   Button,
   Typography,
   Textarea,
@@ -33,7 +32,7 @@ const CreateGame = () => {
         : [...form[type], value],
     });
   };
-  console.log(form);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     // Aquí puedes realizar acciones con los datos, como enviarlos a un servidor o mostrarlos en una alerta.
@@ -101,7 +100,7 @@ const CreateGame = () => {
               <Input
                 className="w-1/2"
                 label="web url"
-                name="webs"
+                name="website"
                 onChange={(e) => handleInputChange(e)}
               />
             </div>

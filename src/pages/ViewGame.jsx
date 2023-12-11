@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import React from "react";
 import {
   Card,
   CardHeader,
@@ -39,7 +39,7 @@ const ViewGame = () => {
   }, []);
   console.log(view);
   return (
-    <div className="h-screen flex items-center">
+    <div className="h-screen flex items-center p-3">
       <Card className="w-full mx-auto max-w-[45rem]  shadow-lg shadow-red-900 rounded-none border-4 border-gray-900  filter-none">
         <CardHeader
           floated={false}
@@ -96,9 +96,11 @@ const ViewGame = () => {
                 <div className="gap-2 w-4/5 flex border-l-2">
                   {view.genres?.map((genre) => {
                     return (
-                      <span className="p-2 text-sm text-red-900">
-                        {genre.name}
-                      </span>
+                      <React.Fragment>
+                        <span className="p-2 text-sm text-red-900">
+                          {genre.name}
+                        </span>
+                      </React.Fragment>
                     );
                   })}
                 </div>
@@ -108,9 +110,11 @@ const ViewGame = () => {
                 <div className="gap-2 flex w-4/5 flex-wrap border-l-2">
                   {view.platforms?.map((platform) => {
                     return (
-                      <span className="p-2 text-sm text-gray-800">
-                        {platform?.platform?.name || platform?.name }
-                      </span>
+                      <React.Fragment>
+                        <span className="p-2 text-sm text-gray-800">
+                          {platform?.platform?.name || platform?.name}
+                        </span>
+                      </React.Fragment>
                     );
                   })}
                 </div>

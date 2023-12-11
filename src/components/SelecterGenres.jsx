@@ -34,7 +34,7 @@ const SelecterGenres = () => {
   };
 
   return (
-    <div className="w-72 z-auto">
+    <div className="md:w-3/4 w-full z-auto">
       <Select onChange={handleSelect} label="Select Version" className="">
         {genres.genres.map((genre) => {
           return (
