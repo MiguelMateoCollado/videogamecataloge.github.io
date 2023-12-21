@@ -1,7 +1,4 @@
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import React from "react";
 import {
   Card,
@@ -11,33 +8,10 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
-import { setViewGame } from "../store/reducers/gamesSlice";
+import useViewGame from "../hooks/useViewGame";
 const ViewGame = () => {
-  const [read, setRead] = useState(true);
-  const { gamename, gameId } = useParams();
-  const dispatch = useDispatch();
-  const view = useSelector((state) => state.games.gameView);
-  const api_url = import.meta.env.VITE_API_URL;
-  const api_key = import.meta.env.VITE_API_KEY;
-  useEffect(() => {
-    const fetchData = async () => {
-      if (gameId) {
-        const response = await fetch(
-          `http://localhost:3001/videogames/${gameId}`
-        );
-        const data = await response.json();
-        return dispatch(setViewGame(data));
-      } else {
-        const response = await fetch(
-          `${api_url}games/${gamename || gameId}?${api_key}`
-        );
-        const data = await response.json();
-        dispatch(setViewGame(data));
-      }
-    };
-    fetchData();
-  }, []);
-  console.log(view);
+  const { read, setRead, view } = useViewGame();
+
   return (
     <div className="h-screen flex items-center p-3">
       <Card className="w-full mx-auto max-w-[45rem]  shadow-lg shadow-red-900 rounded-none border-4 border-gray-900  filter-none">
