@@ -60,6 +60,7 @@ const useSearch = () => {
     handleSubmit,
     inputRef,
     rollBackSearch,
+    setCurrentPage
   };
 };
 export default useSearch;

@@ -6,12 +6,11 @@ import {
   Typography,
   Button,
 } from "@material-tailwind/react";
-
 import { Link } from "react-router-dom";
 export default function CardGame({ img, name, slug, genres, seeDB }) {
   
   return (
-    <Card className="mt-6 w-96 z-0 drop-shadow-lg shadow-red-900 rounded-none border-4 border-gray-900  filter-none">
+    <Card className="mt-6 md:w-2/5 lg:w-2/6 xl:w-3/12 2xl:w-2/12 w-full z-0 drop-shadow-lg shadow-red-900 rounded-none border-4 border-gray-900 h-96  filter-none">
       <CardHeader
         color="blue-gray"
         style={{
@@ -19,7 +18,7 @@ export default function CardGame({ img, name, slug, genres, seeDB }) {
           backgroundPosition: "center",
           backgroundImage: `url("${img}")`,
         }}
-        className="relative  shadow-inner rounded-none border-4 border-gray-900 h-56"
+        className="relative  shadow-inner rounded-none border-4 border-gray-900 h-3/4"
       >
         <p className="invisible">1</p>
       </CardHeader>

@@ -1,68 +1,32 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import axios from "axios";
-import useFormError from "./useFormError";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const useCreateGame = () => {
-  const { validateForm, handleInputChangeError, formErrors } = useFormError();
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [platforms, setPlatforms] = useState();
   const [genres, setGenres] = useState();
-  const [form, setForm] = useState({
-    platforms: [],
-    genres: [],
-  });
+  async function getPlatforms() {
+    let data = await axios.get("http://localhost:3001/platforms");
+    setPlatforms(await data.data);
+  }
+  async function getGenres() {
+    let data = await axios.get("http://localhost:3001/generos");
+    setGenres(await data.data);
+  }
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    handleInputChangeError(event);
-    setForm({ ...form, [name]: value });
-  };
-  const handleCheckBox = (event, type) => {
-    const { value } = event.target;
-    setForm({
-      ...form,
-      [type]: form[type].includes(value)
-        ? form[type].filter((el) => el !== value)
-        : [...form[type], value],
-    });
-  };
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const hasErrors = validateForm();
-    console.log(hasErrors);
-    if (hasErrors == false) {
-      // Envía el formulario
-      axios
-        .post("http://localhost:3001/create", form)
-        .then(() => navigate("/"));
-    }
-    // Aquí puedes realizar acciones con los datos, como enviarlos a un servidor o mostrarlos en una alerta.
-  };
-
+  const onSubmit = (data) => console.log(data);
   useEffect(() => {
-    const fetchDataPlat = async () => {
-      const response = await fetch(`http://localhost:3001/platforms`);
-      const data = await response.json();
-      setPlatforms(data);
-    };
-    fetchDataPlat();
-    const fetchDataGen = async () => {
-      const response = await fetch(`http://localhost:3001/generos`);
-      const data = await response.json();
-      setGenres(data);
-    };
-    fetchDataGen();
+    getPlatforms();
+    getGenres();
   }, []);
-  return {
-    handleSubmit,
-    handleCheckBox,
-    handleInputChange,
-    platforms,
-    genres,
-    formErrors,
-    form,
-  };
+  return { register, handleSubmit, platforms, errors, genres, onSubmit };
 };
 
 export default useCreateGame;

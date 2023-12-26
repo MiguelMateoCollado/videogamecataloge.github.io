@@ -7,17 +7,9 @@ import {
 } from "@material-tailwind/react";
 import CheckBoxList from "../components/CheckBoxList";
 import useCreateGame from "../hooks/useCreateGame";
-import useFormError from "../hooks/useFormError";
 const CreateGame = () => {
-  const {
-    handleSubmit,
-    handleInputChange,
-    handleCheckBox,
-    platforms,
-    genres,
-    formErrors,
-  } = useCreateGame();
-  console.log(formErrors);
+  const { platforms, genres, register, handleSubmit, onSubmit, errors } =
+    useCreateGame();
   return (
     <div className="h-screen flex items-center">
       <Card className="bg-white p-5 flex justify-center  drop-shadow-lg shadow-red-900 rounded-none border-4 border-gray-900  filter-none mx-auto max-w-screen-lg ">
@@ -28,7 +20,7 @@ const CreateGame = () => {
           Enter your details into a new videogame.
         </Typography>
         <form
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
           className="mt-8 mb-2 w-auto max-w-screen-lg mx-auto sm:w-auto"
         >
           <div className="mb-4 flex flex-wrap gap-6">
@@ -38,11 +30,14 @@ const CreateGame = () => {
                   className="w-1/4"
                   label="Name"
                   name="name"
-                  onChange={(e) => handleInputChange(e)}
+                  {...register("name", {
+                    required: true,
+                    minLength: 3,
+                  })}
                 />
-                {formErrors?.name && (
-                  <p className="text-red-700 w-full text-start font-bold">
-                    {formErrors.name}
+                {errors.name?.type === "minLength" && (
+                  <p className="text-red-900 font-bold">
+                    Debe tener mas de 3 digitos
                   </p>
                 )}
               </div>
@@ -51,12 +46,13 @@ const CreateGame = () => {
                   className="w-1/2"
                   label="Description"
                   name="description"
-                  onChange={(e) => handleInputChange(e)}
+                  {...register("description", {
+                    required: true,
+                    minLength: 50,
+                  })}
                 />
-                {formErrors?.description && (
-                  <p className="text-red-700 w-full text-start font-bold">
-                    {formErrors.description}
-                  </p>
+                {errors.description?.type === "minLength" && (
+                  <p className="text-red-900 font-bold">Debe ser mas larga!</p>
                 )}
               </div>
             </div>
@@ -65,12 +61,13 @@ const CreateGame = () => {
                 className="w-1/2"
                 label="image url"
                 name="background_image"
-                onChange={(e) => handleInputChange(e)}
+                {...register("background_image", {
+                  required: true,
+                  pattern: /^(ftp|http|https):\/\/[^ "]+$/,
+                })}
               />
-              {formErrors?.background_image && (
-                <p className="text-red-700 w-full text-start font-bold">
-                  {formErrors.background_image}
-                </p>
+              {errors.background_image?.type === "pattern" && (
+                <p className="text-red-900 font-bold">Ingresa una url valida</p>
               )}
             </div>
             <div className="flex w-full gap-3">
@@ -79,12 +76,14 @@ const CreateGame = () => {
                   className="w-1/2"
                   label="rating"
                   name="rating"
-                  onChange={(e) => handleInputChange(e)}
+                  {...register("rating")}
+                  {...register("rating", {
+                    required: true,
+                    min: 1,
+                  })}
                 />
-                {formErrors?.rating && (
-                  <p className="text-red-700 w-full text-start font-bold">
-                    {formErrors.rating}
-                  </p>
+                {errors.rating?.type === "min" && (
+                  <p className="text-red-900 font-bold">Debe ser mayor a 0!</p>
                 )}
               </div>
               <div className="flex flex-wrap w-full">
@@ -92,11 +91,14 @@ const CreateGame = () => {
                   className="w-1/2"
                   label="web url"
                   name="website"
-                  onChange={(e) => handleInputChange(e)}
+                  {...register("website", {
+                    required: true,
+                    pattern: /^(ftp|http|https):\/\/[^ "]+$/,
+                  })}
                 />
-                {formErrors?.website && (
-                  <p className="text-red-700 w-full text-start font-bold">
-                    {formErrors.website}
+                {errors.website?.type === "pattern" && (
+                  <p className="text-red-900 font-bold">
+                    Ingresa una url valida
                   </p>
                 )}
               </div>
@@ -105,22 +107,13 @@ const CreateGame = () => {
               <h3 className="w-full">Select Platforms</h3>
               <CheckBoxList
                 items={platforms}
-                set={handleCheckBox}
-                type={"platforms"}
+                registrar={register}
               />
-              {formErrors?.platforms && (
-                <p className="text-red-700 w-full text-start font-bold">
-                  {formErrors.platforms}
-                </p>
-              )}
             </div>
             <div className="flex justify-center flex-wrap w-full gap-3 divide-y my-2 border-black border-t p-3">
               <h3 className="w-full">Select Genres</h3>
-              <CheckBoxList
-                items={genres}
-                set={handleCheckBox}
-                type={"genres"}
-              />
+
+              <CheckBoxList items={genres} type={"genres"} />
             </div>
           </div>
 

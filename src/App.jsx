@@ -12,6 +12,7 @@ import CardGame from "./components/CardGame";
 import { Pagination } from "./components/Pagination";
 function App() {
   const games = useSelector((state) => state.games);
+  console.log(games)
   const dispatch = useDispatch();
   const api_url = import.meta.env.VITE_API_URL;
   const api_key = import.meta.env.VITE_API_KEY;
